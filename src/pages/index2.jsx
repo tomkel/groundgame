@@ -14,6 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Hamburger from '../components/hamburger'
 
 const drawerWidth = 240
@@ -78,17 +79,18 @@ const useStyles = makeStyles(theme => ({
 
 function useOpenAtStart(setOpen) {
   const ref = useRef()
+  const theme = useTheme()
+  const largeScreen = useMediaQuery(theme.breakpoints.up('sm'))
   useEffect(() => {
-    if (!ref.current) {
+    if (largeScreen && !ref.current) {
       setTimeout(() => setOpen(true), 250)
-      ref.current = true
     }
+    ref.current = true // only run on mount
   })
 }
 
 export default function PersistentDrawerRight() {
   const classes = useStyles()
-  const theme = useTheme()
   const [open, setOpen] = React.useState(false)
 
   useOpenAtStart(setOpen)
