@@ -40,6 +40,7 @@ export default function Layout() {
     <div className={classes.root}>
       <CssBaseline />
       <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} />
+      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography paragraph>
@@ -72,7 +73,6 @@ export default function Layout() {
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
       </main>
-      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} />
     </div>
   )
 }

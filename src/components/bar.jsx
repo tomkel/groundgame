@@ -10,9 +10,11 @@ import Hamburger from './hamburger'
 const useStyles = makeStyles(theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    flexGrow: 1,
   },
   title: {
-    flexGrow: 1,
+    fontWeight: 'bold',
+    fontVariant: 'small-caps',
   },
 }))
 
@@ -28,17 +30,17 @@ export default function Bar(props) {
       className={classes.appBar}
     >
       <Toolbar style={{ paddingTop: theme.spacing(1) }}>
-        <Typography variant="h6" noWrap className={classes.title}>
-            Ground Game LA
-        </Typography>
         <IconButton
           color="inherit"
           aria-label="Open drawer"
           onClick={onHamburgerClick}
-          edge="end"
+          edge="start"
         >
           <Hamburger open={isDrawerOpen} />
         </IconButton>
+        <Typography variant="h5" noWrap className={classes.title}>
+            Ground Game LA
+        </Typography>
       </Toolbar>
     </AppBar>
   )

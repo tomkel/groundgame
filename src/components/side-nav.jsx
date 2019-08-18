@@ -10,6 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
+import NavContents from './nav-contents'
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -41,7 +42,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: '0 8px',
+    padding: theme.spacing(0, 1),
+    marginBottom: theme.spacing(1) + 2, // 8 + 2
     ...theme.mixins.toolbar,
   },
 }))
@@ -53,7 +55,7 @@ function SideNav(props) {
   return (
     <Drawer
       variant="permanent"
-      anchor="right"
+      anchor="left"
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
         [classes.drawerClose]: !open,
@@ -69,6 +71,7 @@ function SideNav(props) {
     >
       <div className={classes.toolbar} />
       <Divider />
+      <NavContents />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
@@ -97,6 +100,7 @@ function SideNav(props) {
 SideNav.propTypes = {
   isDrawerOpen: PropTypes.bool.isRequired,
   onPointerOver: PropTypes.func.isRequired,
+  side: PropTypes.oneOf(['left', 'right']).isRequired,
 }
 
 export default SideNav

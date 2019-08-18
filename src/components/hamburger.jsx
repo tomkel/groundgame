@@ -5,7 +5,7 @@ import './hamburger.scss'
 
 const Hamburger = ({ open }) => {
   return (
-    <button className={clsx('hamburger hamburger--arrowalt-r', open && 'is-active')} type="button">
+    <button className={clsx('hamburger hamburger--arrowalt', open && 'is-active')} type="button">
       <span className="hamburger-box">
         <span className="hamburger-inner" />
       </span>
