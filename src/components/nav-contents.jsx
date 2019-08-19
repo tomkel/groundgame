@@ -9,7 +9,6 @@ import TreeItem from '@material-ui/lab/TreeItem'
 import Collapse from '@material-ui/core/Collapse'
 import AndroidIcon from '@material-ui/icons/Android'
 import { useSpring, animated } from 'react-spring'
-import { Link } from 'gatsby'
 
 function MinusSquare(props) {
   return (
@@ -63,6 +62,8 @@ TransitionComponent.propTypes = {
    */
   in: PropTypes.bool,
 }
+
+function Link(props) { return <a>{props.children}</a> }
 
 const StyledTreeItem = withStyles((theme) => ({
   iconContainer: {
