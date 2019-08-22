@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { useTheme } from '@material-ui/styles'
 import { makeStyles, fade, withStyles } from '@material-ui/core/styles'
 import SvgIcon from '@material-ui/core/SvgIcon'
-
 import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import Collapse from '@material-ui/core/Collapse'
 import AndroidIcon from '@material-ui/icons/Android'
 import { useSpring, animated } from 'react-spring'
+import { Link } from '@reach/router'
 
 function MinusSquare(props) {
   return (
@@ -63,8 +63,6 @@ TransitionComponent.propTypes = {
   in: PropTypes.bool,
 }
 
-function Link(props) { return <a>{props.children}</a> }
-
 const StyledTreeItem = withStyles((theme) => ({
   iconContainer: {
     '& .close': {
@@ -113,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedTreeView() {
   const classes = useStyles()
 
-  const getNodeId = (() => {
+ const getNodeId = (() => {
     let nodeId = 0
     return () => {
       nodeId += 1
@@ -144,7 +142,7 @@ export default function CustomizedTreeView() {
       </StyledTreeItem>
       <StyledTreeItem nodeId={getNodeId()} label="Local News">
         <StyledTreeItem nodeId={getNodeId()} label="KNOCK.LA" to="https://knock.la" />
-        <StyledTreeItem nodeId={getNodeId()} label="Ground Game Podcast" />
+        <StyledTreeItem nodeId={getNodeId()} label="Ground Game Podcast" to="https://soundcloud.com/groundgamela"/>
       </StyledTreeItem>
     </TreeView>
   )

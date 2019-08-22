@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
+import { Router } from "@reach/router"
 import Bar from './bar'
 import SideNav from './side-nav'
 
@@ -21,6 +22,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
 }))
+
+const About = () => <p>hello</p>
 
 export default function Layout() {
   const classes = useStyles()
@@ -43,6 +46,9 @@ export default function Layout() {
       <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        <Router>
+          <About path="about" />
+        </Router>
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
