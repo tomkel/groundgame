@@ -3,14 +3,9 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
 import NavContents from './nav-contents'
+import NavContents2 from './nav-contents-2'
+import NestedList from './nested-list'
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -50,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 function SideNav(props) {
   const classes = useStyles()
-  const { isDrawerOpen: open, onPointerOver, side } = props
+  const { isDrawerOpen: open, onPointerOver } = props
 
   return (
     <Drawer
@@ -70,29 +65,7 @@ function SideNav(props) {
       onPointerOver={onPointerOver}
     >
       <div className={classes.toolbar} />
-      <Divider />
-      <NavContents />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+			<NestedList />
     </Drawer>
   )
 }
@@ -100,7 +73,6 @@ function SideNav(props) {
 SideNav.propTypes = {
   isDrawerOpen: PropTypes.bool.isRequired,
   onPointerOver: PropTypes.func.isRequired,
-  side: PropTypes.oneOf(['left', 'right']).isRequired,
 }
 
 export default SideNav

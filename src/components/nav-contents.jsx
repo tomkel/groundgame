@@ -8,7 +8,45 @@ import TreeItem from '@material-ui/lab/TreeItem'
 import Collapse from '@material-ui/core/Collapse'
 import AndroidIcon from '@material-ui/icons/Android'
 import { useSpring, animated } from 'react-spring'
-import { Link } from '@reach/router'
+import { Link as RouterLink } from '@reach/router'
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+
+const useLinkStyles = makeStyles(theme => ({
+  link: {
+    color: 'inherit',
+    textDecoration: 'none',
+  }
+}))
+
+function SmartLink(props) {
+	const classes = useLinkStyles();
+
+
+
+	return props.to ? props.to.startsWith('http') ? (
+//<List>
+//<ListItem fullWidth={true}>
+    <Link underline='none' href={props.to}>
+      {props.children}
+    </Link>
+//</ListItem>
+//</List>
+  ) : (
+//<ListItem fullWidth={true}>
+    <RouterLink className={classes.link} to={props.to}>
+      {props.children}
+    </RouterLink>
+//</ListItem>
+  ) : (
+		//<div>
+			props.children
+		//</div>
+  )
+}
 
 function MinusSquare(props) {
   return (
@@ -36,13 +74,6 @@ function CloseSquare(props) {
     </SvgIcon>
   )
 }
-
-function Spacer() {
-  return (
-    <div style={{ width: '0px' }} />
-  )
-}
-
 function TransitionComponent(props) {
   const style = useSpring({
     from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
@@ -63,12 +94,7 @@ TransitionComponent.propTypes = {
   in: PropTypes.bool,
 }
 
-const StyledTreeItem = withStyles((theme) => ({
-  iconContainer: {
-    '& .close': {
-      opacity: 0.3,
-    },
-  },
+const StyledTreeItems = withStyles((theme) => ({
   group: {
     marginLeft: 12,
     paddingLeft: 12,
@@ -82,29 +108,92 @@ const StyledTreeItem = withStyles((theme) => ({
       backgroundColor: 'red',
     },
   },
-  link: {
+}));
+  
+const useTreeItemStyles = makeStyles(theme => ({
+  root: {
+    color: theme.palette.text.secondary,
+    '&:focus > $content': {
+      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
+      color: 'var(--tree-view-color)',
+    },
+  },
+  content: {
+    color: theme.palette.text.secondary,
+    borderTopRightRadius: theme.spacing(2),
+    borderBottomRightRadius: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    fontWeight: theme.typography.fontWeightMedium,
+    '$expanded > &': {
+      fontWeight: theme.typography.fontWeightRegular,
+    },
+  },
+  group: {
+    marginLeft: 0,
+    '& $content': {
+      paddingLeft: theme.spacing(2),
+    },
+  },
+  expanded: {},
+  label: {
+    fontWeight: 'inherit',
     color: 'inherit',
-    textDecoration: 'none',
-  }
+  },
+  labelRoot: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0.5, 0),
+  },
+  labelIcon: {
+    marginRight: theme.spacing(1),
+  },
+  labelText: {
+    fontWeight: 'inherit',
+    flexGrow: 1,
+  },
+}));
 
-}))((props) => {
-  const { classes } = props
-  const treeItem = <TreeItem {...props} TransitionComponent={TransitionComponent} />
+function StyledTreeItem(props) {
+  const classes = useTreeItemStyles();
+  const { to, label: labelText, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other } = props;
 
-  return props.to ? props.to.startsWith('http') ? (
-    <a className={classes.link} href={props.to}>
-      {treeItem}
-    </a>
-  ) : (
-    <Link className={classes.link} to={props.to}>
-      {treeItem}
-    </Link>
-  ) : treeItem
-})
+
+
+  return (
+		<SmartLink to={to}>
+			<TreeItem
+				label={
+					<div className={classes.labelRoot}>
+						<LabelIcon color="inherit" className={classes.labelIcon} />
+						<Typography variant="body2" className={classes.labelText}>
+							{labelText}
+						</Typography>
+						<Typography variant="caption" color="inherit">
+							{labelInfo}
+						</Typography>
+					</div>
+				}
+				style={{
+					'--tree-view-color': color,
+					'--tree-view-bg-color': bgColor,
+				}}
+				classes={{
+					root: classes.root,
+					content: classes.content,
+					expanded: classes.expanded,
+					group: classes.group,
+					label: classes.label,
+				}}
+				TransitionComponent={TransitionComponent} 
+				{...other}
+			/>
+		</SmartLink>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginLeft: theme.spacing(3),
+    // paddingLeft: theme.spacing(3),
   },
 }))
 
