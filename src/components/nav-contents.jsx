@@ -104,7 +104,7 @@ function NestedListItem({ children, ...props }) {
 	)
 }
 
-export default function NestedList() {
+export default function NavContents() {
   const classes = useStyles();
 
   return (
