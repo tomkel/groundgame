@@ -7,7 +7,7 @@ import NavContents from './nav-contents'
 import NavContents2 from './nav-contents-2'
 import NestedList from './nested-list'
 
-const drawerWidth = 240
+const drawerWidth = 340
 const useStyles = makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
@@ -23,10 +23,10 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   drawerClose: {
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
+    width: theme.spacing(9),
+    //[theme.breakpoints.up('sm')]: {
+    //  width: theme.spacing(9),
+    //},
     overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -34,12 +34,8 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    marginBottom: theme.spacing(1) + 2, // 8 + 2
-    ...theme.mixins.toolbar,
+    height: theme.spacing(7),
+    //...theme.mixins.toolbar,
   },
 }))
 
