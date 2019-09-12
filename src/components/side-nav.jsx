@@ -4,8 +4,6 @@ import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import NavContents from './nav-contents'
-import NavContents2 from './nav-contents-2'
-import NestedList from './nested-list'
 
 const drawerWidth = 340
 const useStyles = makeStyles(theme => ({
@@ -61,7 +59,7 @@ function SideNav(props) {
       onPointerOver={onPointerOver}
     >
       <div className={classes.toolbar} />
-			<NestedList />
+			<NavContents />
     </Drawer>
   )
 }
