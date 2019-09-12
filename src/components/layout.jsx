@@ -5,21 +5,33 @@ import Typography from '@material-ui/core/Typography'
 import { Router } from "@reach/router"
 import Bar from './bar'
 import SideNav from './side-nav'
+import Home from '../pages/home'
+//import About from '../pages/about'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
+  layout: {
+    display: 'grid',
+    gridTemplateRows: `${theme.spacing(8)}px 1fr`,
+    gridTemplateColumns: '1fr 18fr',
+    gridTemplateAreas: [[
+      '"barnav bar"',
+      '"nav main"',
+    ]],
+    width: '100vw',
+    height: '100vh',
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
+  bar: {
+    gridRow: '1 / 3',
+    gridColumn: '1 / 2',
+    //...theme.mixins.toolbar,
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
+  nav: {
+    gridRow: '1 / 2',
+    gridColumn: '1 / 3',
+  },
+  main: {
+    gridRow: '2 / 3',
+    gridColumn: '2 / 3',
   },
 }))
 
@@ -40,45 +52,14 @@ export default function Layout() {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.layout} >
       <CssBaseline />
-      <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} />
-      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Router>
-          <About path="about" />
-        </Router>
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </main>
+      <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
+      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
+      <Router className={classes.main}>
+        <Home path="/" />
+        <About path="about" />
+      </Router>
     </div>
   )
 }

@@ -5,11 +5,11 @@ import './hamburger.scss'
 
 const Hamburger = ({ open }) => {
   return (
-    <button className={clsx('hamburger hamburger--arrowalt', open && 'is-active')} type="button">
+    <div className={clsx('hamburger hamburger--arrowalt', open && 'is-active')}>
       <span className="hamburger-box">
         <span className="hamburger-inner" />
       </span>
-    </button>
+    </div>
   )
 }
 

@@ -59,7 +59,7 @@ function NavItem({ label, to = '', icon, children, ...props }) {
   return (
     <SmartLink to={to} getProps={isActive}>
       <ListItem button selected={active} {...props} >
-        <ListItemIcon> {icon} </ListItemIcon>
+        <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={label} />
         {children}
       </ListItem>

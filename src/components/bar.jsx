@@ -10,7 +10,6 @@ import Hamburger from './hamburger'
 const useStyles = makeStyles(theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    flexGrow: 1,
   },
   title: {
     fontWeight: 'bold',
