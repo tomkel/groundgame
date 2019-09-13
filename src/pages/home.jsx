@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Twitter from '../components/twitter'
 import Instagram from '../components/instagram'
+import ActionNetwork from '../components/action-network'
 import DonateButton from '../components/donate-button'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
@@ -47,7 +48,7 @@ export default function Home() {
         </Zoom>
       </div>
       <div className={classes.hero}>
-        My hero
+        <ActionNetwork/>
       </div>
     </div>
   )

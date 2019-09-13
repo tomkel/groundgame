@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
 import { Router } from "@reach/router"
 import Bar from './bar'
 import SideNav from './side-nav'
@@ -54,7 +52,6 @@ export default function Layout() {
 
   return (
     <div className={classes.layout} >
-      <CssBaseline />
       <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
       <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
       <Router className={classes.main}>
