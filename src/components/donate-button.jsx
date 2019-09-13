@@ -19,7 +19,7 @@ export default function DonateButton() {
   return (
     <Fab color="primary" size="large" variant="extended" aria-label="donate" className={classes.fab} href="https://secure.actblue.com/donate/ggla">
       <FeedbackIcon className={classes.extendedIcon} />
-			<Typography variant="h6"><b>Donate to Ground Game</b></Typography>
+      <Typography variant="h6"><b>Donate to Ground Game</b></Typography>
     </Fab>
   )
 }

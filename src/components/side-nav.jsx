@@ -59,7 +59,7 @@ function SideNav(props) {
       onPointerOver={onPointerOver}
     >
       <div className={classes.toolbar} />
-			<NavContents />
+      <NavContents />
     </Drawer>
   )
 }

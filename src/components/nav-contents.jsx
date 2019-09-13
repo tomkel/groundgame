@@ -44,9 +44,9 @@ function SmartLink({ to, className, children, ...props }) {
       {children}
     </Link>
   ) : (
-		<>
+    <>
       {children}
-		</>
+    </>
   )
 }
 
