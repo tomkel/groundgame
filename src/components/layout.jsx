@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Router } from "@reach/router"
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Bar from './bar'
 import SideNav from './side-nav'
 import Home from '../pages/home'
 import About from '../pages/about'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   layout: {
     display: 'grid',
     gridTemplateRows: `${theme.spacing(8)}px 1fr`,
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   bar: {
     gridRow: '1 / 3',
     gridColumn: '1 / 2',
-    //...theme.mixins.toolbar,
+    // ...theme.mixins.toolbar,
   },
   nav: {
     gridRow: '1 / 2',
@@ -49,13 +49,15 @@ export default function Layout() {
   }
 
   return (
-    <div className={classes.layout} >
-      <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
-      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
-      <Router className={classes.main}>
-        <Home path="/" />
-        <About path="about" />
-      </Router>
-    </div>
+    <Router>
+      <div className={classes.layout}>
+        <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
+        <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
+        <div className={classes.main}>
+          <Route exact path="/" component={Home} />
+          <Route path="/about" component={About} />
+        </div>
+      </div>
+    </Router>
   )
 }
