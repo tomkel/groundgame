@@ -4,7 +4,7 @@ import { Router } from "@reach/router"
 import Bar from './bar'
 import SideNav from './side-nav'
 import Home from '../pages/home'
-//import About from '../pages/about'
+import About from '../pages/about'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -33,8 +33,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
 }))
-
-const About = () => <p>hello</p>
 
 export default function Layout() {
   const classes = useStyles()
