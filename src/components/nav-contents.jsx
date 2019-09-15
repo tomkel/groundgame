@@ -17,7 +17,7 @@ import HowToVoteTwoToneIcon from '@material-ui/icons/HowToVoteTwoTone'
 import HomeWorkTwoToneIcon from '@material-ui/icons/HomeWorkTwoTone'
 import LocalTaxiTwoToneIcon from '@material-ui/icons/LocalTaxiTwoTone'
 import ApartmentTwoToneIcon from '@material-ui/icons/ApartmentTwoTone'
-import CardTravelTwoToneIcon from '@material-ui/icons/CardTravelTwoTone'
+import PublicTwoToneIcon from '@material-ui/icons/PublicTwoTone'
 import RestaurantTwoToneIcon from '@material-ui/icons/RestaurantTwoTone'
 import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@material-ui/icons/SupervisedUserCircleTwoTone'
@@ -108,18 +108,18 @@ function NestedListItem({ children, ...props }) {
   )
 }
 
-export default function NavContents() {
+export default function NavContents({ className }) {
   const classes = useStyles()
 
   return (
     <List
       component="nav"
-      className={classes.root}
+      className={clsx(className, classes.root)}
     >
       <NavItem label="Home" to="/" icon={<HomeTwoToneIcon />} />
       <NavItem label="About" to="/about" icon={<FaceTwoToneIcon />} />
       <NestedListItem label="Guides" icon={<ListAltTwoToneIcon />}>
-        <NavItem label="Immigration" to="/guides/immigration" icon={<CardTravelTwoToneIcon />} />
+        <NavItem label="Immigration" to="/guides/immigration" icon={<PublicTwoToneIcon />} />
         <NavItem label="Eviction" to="/guides/eviction" icon={<ApartmentTwoToneIcon />} />
         <NavItem label="Food" to="/guides/food" icon={<RestaurantTwoToneIcon />} />
         <NavItem label="Dealing with police" to="/guides/police" icon={<LocalTaxiTwoToneIcon />} />
@@ -129,7 +129,7 @@ export default function NavContents() {
       </NestedListItem>
       <NestedListItem label="Issues" icon={<WarningTwoToneIcon />}>
         <NavItem label="Housing and Homelessness" to="/issues/hnh" icon={<HomeWorkTwoToneIcon />} />
-        <NavItem label="Immigration" to="/issues/immigration" icon={<CardTravelTwoToneIcon />} divider />
+        <NavItem label="Immigration" to="/issues/immigration" icon={<PublicTwoToneIcon />} divider />
       </NestedListItem>
       <NestedListItem label="Local News" icon={<MenuBookTwoToneIcon />}>
         <NavItem label="KNOCK.LA" to="https://knock.la" icon={<MenuBookTwoToneIcon />} />
