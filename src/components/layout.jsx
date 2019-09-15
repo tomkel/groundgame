@@ -1,10 +1,32 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import clsx from 'clsx'
 import Bar from './bar'
 import SideNav from './side-nav'
 import Home from '../pages/home'
 import About from '../pages/about'
+
+// Hides children when the route doesn't match
+// This prevents components from being unmounted
+// So twitter and actionNetwork won't need to be reinitialized with a bunch of
+// network requests and lag
+const useHideStyles = makeStyles((theme) => ({
+  hide: { display: 'none' },
+  fullHeight: { height: '100%' },
+}))
+
+function Hide({ match, children }) {
+  const classes = useHideStyles()
+
+  const hide = !(match && match.isExact)
+
+  return (
+    <div className={clsx(classes.fullHeight, hide && classes.hide)}>
+      {children}
+    </div>
+  )
+}
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -54,8 +76,8 @@ export default function Layout() {
         <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
         <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
         <div className={classes.main}>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route exact path="/" children={(props) => <Hide {...props}><Home /></Hide>} />
+          <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
         </div>
       </div>
     </Router>
