@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Box from '@material-ui/core/Box'
+import { Route } from 'react-router-dom'
 import clsx from 'clsx'
 import Bar from './bar'
 import SideNav from './side-nav'
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     ]],
     width: '100vw',
     height: '100vh',
+    overflowX: 'hidden',
   },
   bar: {
     gridRow: '1 / 3',
@@ -53,10 +55,14 @@ const useStyles = makeStyles((theme) => ({
     gridRow: '2 / 3',
     gridColumn: '2 / 3',
     margin: theme.spacing(1),
+
+  },
+  noOverflow: {
+    overflowY: 'hidden',
   },
 }))
 
-export default function Layout() {
+function Layout({ match }) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
 
@@ -71,15 +77,15 @@ export default function Layout() {
   }
 
   return (
-    <Router>
-      <div className={classes.layout}>
-        <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
-        <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
-        <div className={classes.main}>
-          <Route exact path="/" children={(props) => <Hide {...props}><Home /></Hide>} />
-          <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
-        </div>
+    <div className={classes.layout}>
+      <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
+      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
+      <div className={clsx(classes.main, match.isExact && classes.noOverflow)}>
+        <Route exact path="/" children={({ match }) => <Hide match={match}><Home match={match}/></Hide>} />
+        <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
       </div>
-    </Router>
+    </div>
   )
 }
+
+export default Layout

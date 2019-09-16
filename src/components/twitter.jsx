@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Twitter({ className, match, ...props }) {
+function Twitter({ className, ...props }) {
   const classes = useStyles()
   return (
     <div className={clsx(className, classes.height)}>

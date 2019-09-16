@@ -1,18 +1,22 @@
 import React from 'react'
+import { styled } from '@material-ui/styles'
 import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
-import Zoom from '@material-ui/core/Zoom'
+import Grow from '@material-ui/core/Grow'
+import Fade from '@material-ui/core/Fade'
 import Twitter from '../components/twitter'
 import Instagram from '../components/instagram'
-import ActionNetwork from '../components/action-network'
 import DonateButton from '../components/donate-button'
+import Hero from '../components/hero'
+import la from '../images/la-bw.jpg'
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'grid',
-    gridTemplateRows: '4fr 3fr 1fr',
-    gridTemplateColumns: '2fr 1fr',
+    gridTemplateRows: 'minmax(0,4fr) minmax(0,3fr) minmax(0,1fr)',
+    gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)',
     gridTemplateAreas: [[
       '"hero twitter"',
       '"hero twitter"',
@@ -21,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(1),
     width: '100%',
     height: '100%',
+    overflowY: 'hidden',
   },
   twitter: {
     gridArea: 'twitter',
@@ -36,18 +41,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Home() {
+const useImageStyles = makeStyles((theme) => ({
+  imgContainer: {
+    zIndex: '-1',
+  },
+}))
+
+const BGImage = styled('div')({
+  opacity: '0.5',
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100%',
+  backgroundImage: `url(${la})`,
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  /*
+    opacity: ${props => (props.isVisible ? 1 : 0)};
+    transition-duration: ${props => `${props.transitionDuration}ms`};
+    transition-property: opacity;
+    transition-timing-function: ${props => props.transitionTimingFunction};
+    */
+})
+
+function FadeInBGImage({ match }) {
+  const classes = useImageStyles()
+
+  // use a container so we don't apply opacity:1 directly to bgImage which
+  // overwrites opacity:0.5
+  // Fade applies opacity transition to its first child
+  return (
+    <Fade in={match && match.isExact} timeout={3000}>
+      <div className={classes.imgContainer}>
+        <BGImage />
+      </div>
+    </Fade>
+  )
+}
+
+export default function Home({ match }) {
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
+      <FadeInBGImage match={match} />
       <Twitter className={classes.twitter} />
       <div className={classes.donate}>
-        <Zoom in timeout={5000} style={{ transitionDelay: '0ms' }}>
-          <DonateButton />
-        </Zoom>
+        <Grow appear in={match && match.isExact} timeout={1250}>
+          <div>
+            <DonateButton />
+          </div>
+        </Grow>
       </div>
-      <div className={classes.hero} />
+      <div className={classes.hero}>
+        <Hero>
+          <h1>Generic Startup Hype Headline</h1>
+        </Hero>
+      </div>
     </div>
   )
 }
