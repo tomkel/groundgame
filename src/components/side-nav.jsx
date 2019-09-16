@@ -77,7 +77,7 @@ function PersistentDrawer({ open, onPointerOver, children }) {
       classes={{
         paper: classes.paper,
       }}
-      PaperProps={{ elevation: open ? 16 : 0 }}
+      PaperProps={{ elevation: 16 }}
       open={open}
       onPointerOver={onPointerOver}
     >
