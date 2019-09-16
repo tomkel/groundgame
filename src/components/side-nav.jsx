@@ -2,21 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
 import NavContents from './nav-contents'
 
-const drawerWidth = 240
-const useStyles = makeStyles(theme => ({
+const drawerWidth = 340
+const usePermStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
     whiteSpace: 'nowrap',
   },
   drawerOpen: {
@@ -28,29 +22,17 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   drawerClose: {
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
+    width: theme.spacing(9),
     overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    marginBottom: theme.spacing(1) + 2, // 8 + 2
-    ...theme.mixins.toolbar,
-  },
 }))
 
-function SideNav(props) {
-  const classes = useStyles()
-  const { isDrawerOpen: open, onPointerOver, side } = props
+function PermDrawer({ open, onPointerOver, children }) {
+  const classes = usePermStyles()
 
   return (
     <Drawer
@@ -66,41 +48,77 @@ function SideNav(props) {
           [classes.drawerClose]: !open,
         }),
       }}
+      PaperProps={{ elevation: open ? 16 : 1 }}
       open={open}
       onPointerOver={onPointerOver}
     >
-      <div className={classes.toolbar} />
-      <Divider />
-      <NavContents />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      {children}
     </Drawer>
   )
+}
+
+const usePersistentStyles = makeStyles((theme) => ({
+  drawer: {
+    whiteSpace: 'nowrap',
+    overflowX: 'hidden',
+  },
+  paper: {
+    width: drawerWidth,
+  },
+}))
+
+function PersistentDrawer({ open, onPointerOver, children }) {
+  const classes = usePersistentStyles()
+  return (
+    <Drawer
+      variant="persistent"
+      anchor="left"
+      className={classes.drawer}
+      classes={{
+        paper: classes.paper,
+      }}
+      PaperProps={{ elevation: open ? 16 : 0 }}
+      open={open}
+      onPointerOver={onPointerOver}
+    >
+      {children}
+    </Drawer>
+  )
+}
+
+
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    marginTop: theme.spacing(7),
+    // ...theme.mixins.toolbar,
+  },
+}))
+
+function SideNav({ isDrawerOpen: open, onPointerOver }) {
+  const isSmallScreen = useMediaQuery(
+    (theme) => theme.breakpoints.down(theme.breakpoints.hideDrawer),
+  )
+
+  const classes = useStyles()
+
+  const nav = <NavContents className={classes.toolbar} />
+
+  return isSmallScreen
+    ? (
+      <PersistentDrawer open={open}>
+        {nav}
+      </PersistentDrawer>
+    )
+    : (
+      <PermDrawer open={open} onPointerOver={onPointerOver}>
+        {nav}
+      </PermDrawer>
+    )
 }
 
 SideNav.propTypes = {
   isDrawerOpen: PropTypes.bool.isRequired,
   onPointerOver: PropTypes.func.isRequired,
-  side: PropTypes.oneOf(['left', 'right']).isRequired,
 }
 
 export default SideNav

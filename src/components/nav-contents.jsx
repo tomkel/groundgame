@@ -1,150 +1,144 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { useTheme } from '@material-ui/styles'
-import { makeStyles, fade, withStyles } from '@material-ui/core/styles'
-import SvgIcon from '@material-ui/core/SvgIcon'
-
-import TreeView from '@material-ui/lab/TreeView'
-import TreeItem from '@material-ui/lab/TreeItem'
+import React, { useState, useContext, cloneElement } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-import AndroidIcon from '@material-ui/icons/Android'
-import { useSpring, animated } from 'react-spring'
-import { Link } from 'gatsby'
+import Divider from '@material-ui/core/Divider'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import { NavLink } from 'react-router-dom'
+import clsx from 'clsx'
+import FaceTwoToneIcon from '@material-ui/icons/FaceTwoTone'
+import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone'
+import ListAltTwoToneIcon from '@material-ui/icons/ListAltTwoTone'
+import HowToVoteTwoToneIcon from '@material-ui/icons/HowToVoteTwoTone'
+import HomeWorkTwoToneIcon from '@material-ui/icons/HomeWorkTwoTone'
+import LocalTaxiTwoToneIcon from '@material-ui/icons/LocalTaxiTwoTone'
+import ApartmentTwoToneIcon from '@material-ui/icons/ApartmentTwoTone'
+import PublicTwoToneIcon from '@material-ui/icons/PublicTwoTone'
+import RestaurantTwoToneIcon from '@material-ui/icons/RestaurantTwoTone'
+import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone'
+import SupervisedUserCircleTwoToneIcon from '@material-ui/icons/SupervisedUserCircleTwoTone'
+import MenuBookTwoToneIcon from '@material-ui/icons/MenuBookTwoTone'
+import HeadsetMicTwoToneIcon from '@material-ui/icons/HeadsetMicTwoTone'
+import WarningTwoToneIcon from '@material-ui/icons/WarningTwoTone'
+import DrawerContext from './drawer-context'
 
-function MinusSquare(props) {
-  return (
-    <SvgIcon fontSize="inherit" {...props}>
-      {/* tslint:disable-next-line: max-line-length */}
-      <path d="M22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0zM17.873 11.023h-11.826q-.375 0-.669.281t-.294.682v0q0 .401.294 .682t.669.281h11.826q.375 0 .669-.281t.294-.682v0q0-.401-.294-.682t-.669-.281z" />
-    </SvgIcon>
-  )
-}
-
-function PlusSquare(props) {
-  return (
-    <SvgIcon fontSize="inherit" {...props}>
-      {/* tslint:disable-next-line: max-line-length */}
-      <path d="M22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0zM17.873 12.977h-4.923v4.896q0 .401-.281.682t-.682.281v0q-.375 0-.669-.281t-.294-.682v-4.896h-4.923q-.401 0-.682-.294t-.281-.669v0q0-.401.281-.682t.682-.281h4.923v-4.896q0-.401.294-.682t.669-.281v0q.401 0 .682.281t.281.682v4.896h4.923q.401 0 .682.281t.281.682v0q0 .375-.281.669t-.682.294z" />
-    </SvgIcon>
-  )
-}
-
-function CloseSquare(props) {
-  return (
-    <SvgIcon className="close" fontSize="inherit" {...props}>
-      {/* tslint:disable-next-line: max-line-length */}
-      <path d="M17.485 17.512q-.281.281-.682.281t-.696-.268l-4.12-4.147-4.12 4.147q-.294.268-.696.268t-.682-.281-.281-.682.294-.669l4.12-4.147-4.12-4.147q-.294-.268-.294-.669t.281-.682.682-.281.696 .268l4.12 4.147 4.12-4.147q.294-.268.696-.268t.682.281 .281.669-.294.682l-4.12 4.147 4.12 4.147q.294.268 .294.669t-.281.682zM22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0z" />
-    </SvgIcon>
-  )
-}
-
-function Spacer() {
-  return (
-    <div style={{ width: '0px' }} />
-  )
-}
-
-function TransitionComponent(props) {
-  const style = useSpring({
-    from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
-    to: { opacity: props.in ? 1 : 0, transform: `translate3d(${props.in ? 0 : 20}px,0,0)` },
-  })
-
-  return (
-    <animated.div style={style}>
-      <Collapse {...props} />
-    </animated.div>
-  )
-}
-
-TransitionComponent.propTypes = {
-  /**
-   * Show the component triggers the enter or exit states
-   */
-  in: PropTypes.bool,
-}
-
-const StyledTreeItem = withStyles((theme) => ({
-  iconContainer: {
-    '& .close': {
-      opacity: 0.3,
-    },
-  },
-  group: {
-    marginLeft: 12,
-    paddingLeft: 12,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
-  },
-  label: {
-    margin: theme.spacing(1),
-  },
-  root: {
-    '&:focus > $content': {
-      backgroundColor: 'red',
-    },
-  },
+const useLinkStyles = makeStyles((theme) => ({
   link: {
     color: 'inherit',
     textDecoration: 'none',
-  }
-
-}))((props) => {
-  const { classes } = props
-  const treeItem = <TreeItem {...props} TransitionComponent={TransitionComponent} />
-
-  return props.to ? props.to.startsWith('http') ? (
-    <a className={classes.link} href={props.to}>
-      {treeItem}
-    </a>
-  ) : (
-    <Link className={classes.link} to={props.to}>
-      {treeItem}
-    </Link>
-  ) : treeItem
-})
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginLeft: theme.spacing(3),
   },
 }))
 
-export default function CustomizedTreeView() {
-  const classes = useStyles()
+function SmartLink({
+  to, children, ...props
+}) {
+  const classes = useLinkStyles()
+  const setOpen = useContext(DrawerContext)
 
-  const getNodeId = (() => {
-    let nodeId = 0
-    return () => {
-      nodeId += 1
-      return String(nodeId)
-    }
-  })()
+  const navClicked = () => setOpen(false)
+
+  return to ? to.startsWith('http') ? (
+    <a className={classes.link} href={to}>
+      {children}
+    </a>
+  ) : (
+    <NavLink className={classes.link} to={to} {...props} onClick={navClicked}>
+      {children}
+    </NavLink>
+  ) : (
+    <>
+      {children}
+    </>
+  )
+}
+
+function NavItem({
+  label, to, icon, children, ...props
+}) {
+  const [active, setActive] = useState(false)
+
+  // test 'to' prop so we don't setActive on empty link
+  const isActive = (match) => setActive(match && match.isExact)
 
   return (
-    <TreeView
-      defaultExpanded={['1']}
-      defaultCollapseIcon={<MinusSquare />}
-      defaultExpandIcon={<PlusSquare />}
-      classes={{ root: classes.root }}
+    <SmartLink to={to} isActive={isActive}>
+      <ListItem button selected={active} {...props}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={label} />
+        {children}
+      </ListItem>
+    </SmartLink>
+  )
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+}))
+
+function NestedListItem({ children, ...props }) {
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
+
+  function handleClick() {
+    setOpen(!open)
+  }
+
+  const styledChildren = React.Children.map(children, (child) => (
+    cloneElement(child, { className: classes.nested })
+  ))
+
+  return (
+    <div>
+      <NavItem {...props} onClick={handleClick}>
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </NavItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {styledChildren}
+        </List>
+      </Collapse>
+    </div>
+  )
+}
+
+export default function NavContents({ className }) {
+  const classes = useStyles()
+
+  return (
+    <List
+      component="nav"
+      className={clsx(className, classes.root)}
     >
-      <StyledTreeItem nodeId={getNodeId()} label="About" to="about" />
-      <StyledTreeItem nodeId={getNodeId()} label="Community Resource Guides">
-        <StyledTreeItem nodeId={getNodeId()} label="Immigration" to="guides/immigration" />
-        <StyledTreeItem nodeId={getNodeId()} label="Eviction" to="guides/eviction" />
-        <StyledTreeItem nodeId={getNodeId()} label="Food" to="guides/food" />
-        <StyledTreeItem nodeId={getNodeId()} label="Dealing with police" to="guides/police" />
-        <StyledTreeItem nodeId={getNodeId()} label="Voting" to="guides/voting" />
-        <StyledTreeItem nodeId={getNodeId()} label="Workplace discrimination" to="guides/work-discrimination" />
-        <StyledTreeItem nodeId={getNodeId()} label="Starting a union" to="guides/union" />
-      </StyledTreeItem>
-      <StyledTreeItem nodeId={getNodeId()} label="Issues">
-        <StyledTreeItem nodeId={getNodeId()} label="Housing and Homelessness" to="issues/hnh" />
-        <StyledTreeItem nodeId={getNodeId()} label="Immigration" to="issues/immigration" />
-      </StyledTreeItem>
-      <StyledTreeItem nodeId={getNodeId()} label="Local News">
-        <StyledTreeItem nodeId={getNodeId()} label="KNOCK.LA" to="https://knock.la" />
-        <StyledTreeItem nodeId={getNodeId()} label="Ground Game Podcast" />
-      </StyledTreeItem>
-    </TreeView>
+      <NavItem label="Home" to="/" icon={<HomeTwoToneIcon />} />
+      <NavItem label="About" to="/about" icon={<FaceTwoToneIcon />} />
+      <NestedListItem label="Guides" icon={<ListAltTwoToneIcon />}>
+        <NavItem label="Immigration" to="/guides/immigration" icon={<PublicTwoToneIcon />} />
+        <NavItem label="Eviction" to="/guides/eviction" icon={<ApartmentTwoToneIcon />} />
+        <NavItem label="Food" to="/guides/food" icon={<RestaurantTwoToneIcon />} />
+        <NavItem label="Dealing with police" to="/guides/police" icon={<LocalTaxiTwoToneIcon />} />
+        <NavItem label="Voting" to="/guides/voting" icon={<HowToVoteTwoToneIcon />} />
+        <NavItem label="Workplace discrimination" to="/guides/work-discrimination" icon={<SupervisedUserCircleTwoToneIcon />} />
+        <NavItem label="Starting a union" to="/guides/union" icon={<PeopleAltTwoToneIcon />} divider />
+      </NestedListItem>
+      <NestedListItem label="Issues" icon={<WarningTwoToneIcon />}>
+        <NavItem label="Housing and Homelessness" to="/issues/hnh" icon={<HomeWorkTwoToneIcon />} />
+        <NavItem label="Immigration" to="/issues/immigration" icon={<PublicTwoToneIcon />} divider />
+      </NestedListItem>
+      <NestedListItem label="Local News" icon={<MenuBookTwoToneIcon />}>
+        <NavItem label="KNOCK.LA" to="https://knock.la" icon={<MenuBookTwoToneIcon />} />
+        <NavItem label="Ground Game Podcast" to="https://soundcloud.com/groundgamela" icon={<HeadsetMicTwoToneIcon />} />
+      </NestedListItem>
+    </List>
   )
 }
