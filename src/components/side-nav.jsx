@@ -8,7 +8,7 @@ import Drawer from '@material-ui/core/Drawer'
 import NavContents from './nav-contents'
 
 const drawerWidth = 340
-const useStyles = makeStyles((theme) => ({
+const usePermStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     whiteSpace: 'nowrap',
@@ -29,23 +29,14 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
-  toolbar: {
-    marginTop: theme.spacing(7),
-    // ...theme.mixins.toolbar,
-  },
 }))
 
-function SideNav(props) {
-  const classes = useStyles()
-  const isSmallScreen = useMediaQuery(
-    (theme) => theme.breakpoints.down(theme.breakpoints.hideDrawer),
-  )
-
-  const { isDrawerOpen: open, onPointerOver } = props
+function PermDrawer({ open, onPointerOver, children }) {
+  const classes = usePermStyles()
 
   return (
     <Drawer
-      variant={isSmallScreen ? 'temporary' : 'permanent'}
+      variant="permanent"
       anchor="left"
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
@@ -57,12 +48,72 @@ function SideNav(props) {
           [classes.drawerClose]: !open,
         }),
       }}
+      PaperProps={{ elevation: open ? 16 : 1 }}
       open={open}
       onPointerOver={onPointerOver}
     >
-      <NavContents className={classes.toolbar} />
+      {children}
     </Drawer>
   )
+}
+
+const usePersistentStyles = makeStyles((theme) => ({
+  drawer: {
+    whiteSpace: 'nowrap',
+    overflowX: 'hidden',
+  },
+  paper: {
+    width: drawerWidth,
+  },
+}))
+
+function PersistentDrawer({ open, onPointerOver, children }) {
+  const classes = usePersistentStyles()
+  return (
+    <Drawer
+      variant="persistent"
+      anchor="left"
+      className={classes.drawer}
+      classes={{
+        paper: classes.paper,
+      }}
+      PaperProps={{ elevation: open ? 16 : 0 }}
+      open={open}
+      onPointerOver={onPointerOver}
+    >
+      {children}
+    </Drawer>
+  )
+}
+
+
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    marginTop: theme.spacing(7),
+    // ...theme.mixins.toolbar,
+  },
+}))
+
+function SideNav({ isDrawerOpen: open, onPointerOver }) {
+  const isSmallScreen = useMediaQuery(
+    (theme) => theme.breakpoints.down(theme.breakpoints.hideDrawer),
+  )
+
+  const classes = useStyles()
+
+  const nav = <NavContents className={classes.toolbar} />
+
+  return isSmallScreen
+    ? (
+      <PersistentDrawer open={open}>
+        {nav}
+      </PersistentDrawer>
+    )
+    : (
+      <PermDrawer open={open} onPointerOver={onPointerOver}>
+        {nav}
+      </PermDrawer>
+    )
 }
 
 SideNav.propTypes = {
