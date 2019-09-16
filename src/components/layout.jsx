@@ -7,6 +7,7 @@ import Bar from './bar'
 import SideNav from './side-nav'
 import Home from '../pages/home'
 import About from '../pages/about'
+import DrawerContext from './drawer-context'
 
 // Hides children when the route doesn't match
 // This prevents components from being unmounted
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   layout: {
     display: 'grid',
     gridTemplateRows: `${theme.spacing(8)}px 1fr`,
-    gridTemplateColumns: '1fr 18fr',
+    gridTemplateColumns: 'min-content 1fr',
     gridTemplateAreas: [[
       '"barnav bar"',
       '"nav main"',
@@ -77,14 +78,16 @@ function Layout({ match }) {
   }
 
   return (
-    <div className={classes.layout}>
-      <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
-      <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
-      <div className={clsx(classes.main, match.isExact && classes.noOverflow)}>
-        <Route exact path="/" children={({ match }) => <Hide match={match}><Home match={match}/></Hide>} />
-        <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
+    <DrawerContext.Provider value={setOpen}>
+      <div className={classes.layout}>
+        <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
+        <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
+        <div className={clsx(classes.main, match.isExact && classes.noOverflow)}>
+          <Route exact path="/" children={({ match }) => <Hide match={match}><Home match={match}/></Hide>} />
+          <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
+        </div>
       </div>
-    </div>
+    </DrawerContext.Provider>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from 'react'
+import React, { useState, useContext, cloneElement } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -24,6 +24,7 @@ import SupervisedUserCircleTwoToneIcon from '@material-ui/icons/SupervisedUserCi
 import MenuBookTwoToneIcon from '@material-ui/icons/MenuBookTwoTone'
 import HeadsetMicTwoToneIcon from '@material-ui/icons/HeadsetMicTwoTone'
 import WarningTwoToneIcon from '@material-ui/icons/WarningTwoTone'
+import DrawerContext from './drawer-context'
 
 const useLinkStyles = makeStyles((theme) => ({
   link: {
@@ -36,13 +37,16 @@ function SmartLink({
   to, children, ...props
 }) {
   const classes = useLinkStyles()
+  const setOpen = useContext(DrawerContext)
+
+  const navClicked = () => setOpen(false)
 
   return to ? to.startsWith('http') ? (
     <a className={classes.link} href={to}>
       {children}
     </a>
   ) : (
-    <NavLink className={classes.link} to={to} {...props}>
+    <NavLink className={classes.link} to={to} {...props} onClick={navClicked}>
       {children}
     </NavLink>
   ) : (

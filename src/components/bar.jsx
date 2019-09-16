@@ -9,7 +9,7 @@ import Hamburger from './hamburger'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.modal + 1,
   },
   title: {
     fontWeight: 'bold',

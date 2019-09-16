@@ -16,14 +16,24 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: 'grid',
     gridTemplateRows: 'minmax(0,4fr) minmax(0,3fr) minmax(0,1fr)',
-    gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)',
+    gridTemplateColumns: 'minmax(390px,2fr) minmax(205px,1fr)',
     gridTemplateAreas: [[
       '"hero twitter"',
       '"hero twitter"',
       '"donate twitter"',
     ]],
+    [theme.breakpoints.down(theme.breakpoints.smallHome)]: {
+      gridTemplateRows: '1fr',
+      gridTemplateColumns: '1fr',
+      gridTemplateAreas: [[
+        '"hero"',
+        '"twitter"',
+        '"donate"',
+      ]],
+    },
     gridGap: theme.spacing(1),
     width: '100%',
+    minWidth: '100%',
     height: '100%',
     overflowY: 'hidden',
   },
@@ -35,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
   donate: {
     gridArea: 'donate',
+    justifySelf: 'center',
+    // minWidth: '390px',
   },
   hero: {
     gridArea: 'hero',
