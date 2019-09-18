@@ -108,9 +108,7 @@ export default function Home({ match }) {
         </Grow>
       </div>
       <div className={classes.hero}>
-        <Hero>
-          <h1>Generic Startup Hype Headline</h1>
-        </Hero>
+        <Hero />
       </div>
     </div>
   )
