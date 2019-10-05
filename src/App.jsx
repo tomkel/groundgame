@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import { styled } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Layout from './components/layout'
@@ -18,7 +17,7 @@ export default function App() {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Route children={({ match }) => <Layout match={match} />} />
+        <Layout />
       </Router>
     </MuiThemeProvider>
   )

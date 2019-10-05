@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
-import { Route } from 'react-router-dom'
+import { Route, useRouteMatch } from 'react-router-dom'
 import clsx from 'clsx'
 import Bar from './bar'
 import SideNav from './side-nav'
@@ -63,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Layout({ match }) {
+function Layout() {
+  const match = useRouteMatch('/')
+
   const classes = useStyles()
   const [open, setOpen] = useState(false)
 
@@ -83,7 +85,7 @@ function Layout({ match }) {
         <Bar isDrawerOpen={open} onHamburgerClick={toggleDrawer} className={classes.bar} />
         <SideNav isDrawerOpen={open} onPointerOver={pointerOverDrawer} className={classes.nav} />
         <div className={clsx(classes.main, match.isExact && classes.noOverflow)}>
-          <Route exact path="/" children={({ match }) => <Hide match={match}><Home match={match}/></Hide>} />
+          <Route exact path="/" children={({ match }) => <Hide match={match}><Home /></Hide>} />
           <Route path="/about" children={(props) => <Hide {...props}><About /></Hide>} />
         </div>
       </div>

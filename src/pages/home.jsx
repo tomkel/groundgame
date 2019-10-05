@@ -1,13 +1,11 @@
 import React from 'react'
 import { styled } from '@material-ui/styles'
 import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import Paper from '@material-ui/core/Paper'
-import Divider from '@material-ui/core/Divider'
 import Grow from '@material-ui/core/Grow'
 import Fade from '@material-ui/core/Fade'
+import { useRouteMatch } from 'react-router-dom'
 import Twitter from '../components/twitter'
-import Instagram from '../components/instagram'
+// import Instagram from '../components/instagram'
 import DonateButton from '../components/donate-button'
 import Hero from '../components/hero'
 import la from '../images/la-bw.jpg'
@@ -16,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: 'grid',
     gridTemplateRows: 'minmax(0,4fr) minmax(0,3fr) minmax(0,1fr)',
-    gridTemplateColumns: 'minmax(390px,2fr) minmax(205px,1fr)',
+    gridTemplateColumns: 'minmax(390px,3fr) minmax(205px,1fr)',
     gridTemplateAreas: [[
       '"hero twitter"',
       '"hero twitter"',
@@ -78,14 +76,16 @@ const BGImage = styled('div')({
     */
 })
 
-function FadeInBGImage({ match }) {
+function FadeInBGImage() {
   const classes = useImageStyles()
+
+  const match = useRouteMatch('/')
 
   // use a container so we don't apply opacity:1 directly to bgImage which
   // overwrites opacity:0.5
   // Fade applies opacity transition to its first child
   return (
-    <Fade in={match && match.isExact} timeout={3000}>
+    <Fade in={match.isExact} timeout={3000}>
       <div className={classes.imgContainer}>
         <BGImage />
       </div>
@@ -93,15 +93,17 @@ function FadeInBGImage({ match }) {
   )
 }
 
-export default function Home({ match }) {
+export default function Home() {
   const classes = useStyles()
+
+  const match = useRouteMatch('/')
 
   return (
     <div className={classes.container}>
-      <FadeInBGImage match={match} />
+      <FadeInBGImage />
       <Twitter className={classes.twitter} />
       <div className={classes.donate}>
-        <Grow appear in={match && match.isExact} timeout={1250}>
+        <Grow appear in={match.isExact} timeout={1250}>
           <div>
             <DonateButton />
           </div>
