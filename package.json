@@ -22,7 +22,7 @@
     "react-twitter-embed": "^2.0.8"
   },
   "devDependencies": {
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "prettier": "^1.18.2"
   },
   "repository": "git@github.com:tomkel/groundgame.git",
